@@ -7,17 +7,16 @@ public class Mover : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private Player _player;
+    [SerializeField] private LayerMask _groundMask;
     [SerializeField] private float _moveSpeed = 1.5f;
     [SerializeField] private float _jumpForce = 3f;
     [SerializeField] private float _hitForce = 6f;
 
     private readonly string Horizontal = nameof(Horizontal);
     private readonly string Space = nameof(Jump);
-    private readonly string Fire1 = nameof(Fire1);
 
     public event Action<float> DirectionChange;
     public event Action StopMoving;
-    public event Action StartAttack;
 
     private void OnEnable()
     {
@@ -44,12 +43,6 @@ public class Mover : MonoBehaviour
         {
             Jump();
         } 
-
-        if (Input.GetButtonDown(Fire1))
-        {
-            Attack();
-            StartAttack?.Invoke();
-        }
     }
 
     public bool IsGrounded
@@ -57,9 +50,9 @@ public class Mover : MonoBehaviour
         get
         {
             float circleRadius = 0.1f;
-            Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, circleRadius);
+            Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, circleRadius, _groundMask);
 
-            return collider.Length > 1;
+            return collider.Length > 0;
         }
     }
 
@@ -76,11 +69,6 @@ public class Mover : MonoBehaviour
     private void Jump()
     {
         _rigidbody.AddForce(transform.up * _jumpForce, ForceMode2D.Impulse);
-    }
-
-    private void Attack()
-    {
-
     }
 
     private void GetHit(Vector3 hitPosition)

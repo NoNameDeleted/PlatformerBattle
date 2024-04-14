@@ -18,10 +18,9 @@ public class Player : MonoBehaviour
 
     private void TryGetDamage(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent<Damager>(out Damager damageArea) && 
-            collision.GetComponentInParent<Enemy>())
+        if (collision.TryGetComponent<EnemyDamager>(out EnemyDamager enemy))
         {
-            GetDamage?.Invoke(damageArea.transform.position);
+            GetDamage?.Invoke(enemy.transform.position);
         }
     }
 

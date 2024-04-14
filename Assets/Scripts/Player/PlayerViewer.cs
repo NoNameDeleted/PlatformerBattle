@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerViewer : MonoBehaviour
 {
     [SerializeField] private Mover _movement;
+    [SerializeField] private CutAttacker _cutAttacker;
     [SerializeField] private Player _player;
     [SerializeField] private SpriteRenderer _sprite;
     [SerializeField] private Animator _animator;
@@ -18,7 +19,7 @@ public class PlayerViewer : MonoBehaviour
     {
         _movement.DirectionChange += Flip;
         _movement.StopMoving += Stand;
-        _movement.StartAttack += Attack;
+        _cutAttacker.StartAttack += Attack;
         _player.GetDamage += GetHit;
     }
 
@@ -26,7 +27,7 @@ public class PlayerViewer : MonoBehaviour
     {
         _movement.DirectionChange -= Flip;
         _movement.StopMoving -= Stand;
-        _movement.StartAttack -= Attack;
+        _cutAttacker.StartAttack -= Attack;
         _player.GetDamage -= GetHit;
     }
 
