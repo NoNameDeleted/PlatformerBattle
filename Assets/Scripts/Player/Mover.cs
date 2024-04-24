@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Mover : MonoBehaviour
 {
-    
     [SerializeField] private Player _player;
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private float _moveSpeed = 1.5f;
