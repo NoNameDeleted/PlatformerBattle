@@ -5,15 +5,27 @@ using UnityEngine;
 
 public class Patroler : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private Transform[] _waypoints;
-    [SerializeField] private CircleCollider2D _circleCollider;
     [SerializeField] private float _speed = 1f;
+
+    [SerializeField]  private FieldOfView _fieldOfView;
 
     public event Action<float> DirectionChange;
 
     private int _currentWaypoint;
     private Vector2 _currentTarget;
+
+    private void OnEnable()
+    {
+        _fieldOfView.PlayerSeen += OnPlayerSeen;
+        _fieldOfView.PlayerLeft += OnPlayerLeft;
+    }
+
+    private void OnDisable()
+    {
+        _fieldOfView.PlayerSeen -= OnPlayerSeen;
+        _fieldOfView.PlayerLeft -= OnPlayerLeft;
+    }
 
     private void Start()
     {
@@ -33,21 +45,15 @@ public class Patroler : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, _currentTarget, _speed * Time.deltaTime);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnPlayerSeen(Vector2 playerPosition)
     {
-        if (collision.TryGetComponent<Player>(out Player player))
-        {
-            _currentTarget = player.transform.position;
-            DirectionChange?.Invoke(_currentTarget.x - transform.position.x);
-        }
+        _currentTarget = playerPosition;
+        DirectionChange?.Invoke(_currentTarget.x - transform.position.x);
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnPlayerLeft()
     {
-        if (collision.TryGetComponent<Player>(out Player player))
-        {
-            _currentTarget = _waypoints[_currentWaypoint].position;
-            DirectionChange?.Invoke(_currentTarget.x - transform.position.x);
-        }
+        _currentTarget = _waypoints[_currentWaypoint].position;
+        DirectionChange?.Invoke(_currentTarget.x - transform.position.x);
     }
 }

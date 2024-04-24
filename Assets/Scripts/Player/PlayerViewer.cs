@@ -2,25 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent (typeof(Animator))]
 public class PlayerViewer : MonoBehaviour
 {
     [SerializeField] private Mover _movement;
     [SerializeField] private CutAttacker _cutAttacker;
     [SerializeField] private Player _player;
-    [SerializeField] private SpriteRenderer _sprite;
-    [SerializeField] private Animator _animator;
+
+    private SpriteRenderer _sprite;
+    private Animator _animator;
 
     private readonly int _move = Animator.StringToHash("Move");
     private readonly int _stand = Animator.StringToHash("Stand");
     private readonly int _attack = Animator.StringToHash("Attack");
     private readonly int _getHit = Animator.StringToHash("GetHit");
 
+    private void Awake()
+    {
+        _sprite = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
+    }
+
     private void OnEnable()
     {
         _movement.DirectionChange += Flip;
         _movement.StopMoving += Stand;
         _cutAttacker.StartAttack += Attack;
-        _player.GetDamage += GetHit;
+        _player.GetDamage += OnGetHit;
     }
 
     private void OnDisable()
@@ -28,7 +37,7 @@ public class PlayerViewer : MonoBehaviour
         _movement.DirectionChange -= Flip;
         _movement.StopMoving -= Stand;
         _cutAttacker.StartAttack -= Attack;
-        _player.GetDamage -= GetHit;
+        _player.GetDamage -= OnGetHit;
     }
 
     private void Flip(float direction)
@@ -47,7 +56,7 @@ public class PlayerViewer : MonoBehaviour
         _animator.SetTrigger(_attack);
     }
 
-    private void GetHit(Vector3 hitPosition)
+    private void OnGetHit(Vector3 hitPosition)
     {
         _animator.SetTrigger(_getHit);
     }

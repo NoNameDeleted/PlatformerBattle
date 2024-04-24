@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class EnemyDamager : MonoBehaviour
 {
-    
+    [SerializeField] private int _damage = 10;
+
+    public int Damage => _damage;
 }

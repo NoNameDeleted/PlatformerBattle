@@ -9,6 +9,7 @@ public class CutAttacker : MonoBehaviour
     [SerializeField] private Mover _mover;
     [SerializeField] private Vector2 _attackRectangle = new Vector2(0.16f, 0.1f);
     [SerializeField] private float _attackRange = 0.16f;
+    [SerializeField] private int _damageAmount = 10;
 
     private readonly string Fire1 = nameof(Fire1);
 
@@ -47,7 +48,7 @@ public class CutAttacker : MonoBehaviour
         {
             if (collider.TryGetComponent(out Enemy enemy))
             {
-                enemy.TakeDamage();
+                enemy.TakeDamage(_damageAmount);
             }
         }
     }
