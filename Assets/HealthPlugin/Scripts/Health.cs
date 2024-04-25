@@ -20,7 +20,7 @@ public class Health : MonoBehaviour
         {
             _healthPoint -= Mathf.Clamp(damageAmount, 0, _healthPoint);
             Changed?.Invoke(_healthPoint);
-        }    
+        }
     }
 
     public void RestoreHealth(int healAmount = 1)
@@ -29,6 +29,6 @@ public class Health : MonoBehaviour
         {
             _healthPoint += Mathf.Clamp(healAmount, 0, _maxHealth - _healthPoint);
             Changed?.Invoke(_healthPoint);
-        }   
+        }
     }
 }
