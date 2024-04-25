@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof(Animator))]
+[RequireComponent(typeof(Animator), typeof(Animator))]
 public class PlayerViewer : MonoBehaviour
 {
     [SerializeField] private Mover _movement;
